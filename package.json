@@ -1,0 +1,34 @@
+{
+  "name": "miniforum",
+  "version": "1.0.0",
+  "description": "miniforum",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --output-public-path=/build/  --mode development --progress --open --hot",
+    "build": "webpack --mode production --progress",
+    "json-server": "json-server --watch db/db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiffanygan/miniforum.git"
+  },
+  "author": "Tiffany Gan",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "babel-loader": "^8.0.5",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "bugs": {
+    "url": "https://github.com/tiffanygan/miniforum/issues"
+  },
+  "homepage": "https://github.com/tiffanygan/miniforum#readme",
+  "dependencies": {
+    "json-server": "^0.16.1"
+  }
+}

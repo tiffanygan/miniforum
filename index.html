@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assests/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <title>Miniforum</title>
+    <script defer src="./build/app.bundle.js"></script>
+</head>
+
+<body>
+    <nav class="navbar bg-primary navbar-dark">
+        <a href="#" class="navbar-brand">Miniforum</a>
+    </nav>
+    <div class="container mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">What's on your mind?</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="title">Post Title</label>
+                        <input type="text" id="title" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Post Content</label>
+                        <input type="text" id="content" class="form-control">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block">Post It &nbsp; &nbsp; <i class="far fa-sticky-note"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h3 class="card-title">Post One</h3>
+                <p>This is post one</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- http://localhost:3000/posts -->
+</body>
+
+</html>
