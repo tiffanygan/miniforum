@@ -5,9 +5,8 @@
   "main": "./src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --output-public-path=/build/  --mode development --progress --open --hot",
-    "build": "webpack --mode production --progress",
-    "json-server": "json-server --watch db/db.json"
+    "start": "(json-server --watch db/db.json &) && webpack-dev-server --output-public-path=/build/  --mode development --progress --open --hot",
+    "build": "webpack --mode production --progress"
   },
   "repository": {
     "type": "git",
