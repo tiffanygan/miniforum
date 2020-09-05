@@ -8,6 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     <title>Miniforum</title>
     <script defer src="./build/app.bundle.js"></script>
+    <style>
+        #cancel, #update {
+            display: none;
+        }
+        .fas:hover {
+            cursor: pointer;
+        }
+        @media(min-width: 800px) {
+            #post-area {
+                display: grid;
+                grid-gap: 1rem;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media(min-width: 1366px) {
+            #post-area {
+                display: grid;
+                grid-gap: 1rem;
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -25,9 +47,11 @@
                     </div>
                     <div class="form-group">
                         <label for="content">Post Content</label>
-                        <input type="text" id="content" class="form-control">
+                        <textarea id="content" cols="30" rows="10" class="form-control"></textarea>
                     </div>
-                    <button type="button" class="btn btn-primary btn-block" id="submit">Post It &nbsp; &nbsp; <i class="far fa-sticky-note"></i></button>
+                    <button type="button" class="btn btn-primary" id="submit">Post It &nbsp; &nbsp; <i class="far fa-sticky-note"></i></button>
+                    <button type="button" class="btn btn-primary" id="update">Update &nbsp; &nbsp; <i class="fas fa-pencil-alt"></i></button>
+                    <button type="button" class="btn btn-secondary" id="cancel">Cancel &nbsp; &nbsp; <i class="fas fa-chevron-left"></i></button>
                 </form>
             </div>
         </div>

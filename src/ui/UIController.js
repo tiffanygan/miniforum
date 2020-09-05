@@ -4,6 +4,8 @@ export default class UIController {
     constructor(document) {
         this.document = document;
         this.submitBtn = this.document.getElementById('submit');
+        this.cancelBtn = this.document.getElementById('cancel');
+        this.updateBtn = this.document.getElementById('update');
         this.postArea = this.document.getElementById('post-area');
         this.titleInput = this.document.getElementById('title');
         this.bodyInput = this.document.getElementById('content');
@@ -44,9 +46,20 @@ export default class UIController {
         return new Post(this.titleInput.value, this.bodyInput.value);
     }
 
-    fillInput(post) {
+    editPost(post) {
         this.titleInput.value = post.title;
         this.bodyInput.value = post.body;
+        this.cancelBtn.style.display = 'inline-block';
+        this.updateBtn.style.display = 'inline-block';
+        this.updateBtn.dataset.id = post.id;
+        this.submitBtn.style.display = 'none';
+    }
+
+    addNewPost() {
+        this.clearInput();
+        this.cancelBtn.style.display = 'none';
+        this.updateBtn.style.display = 'none';
+        this.submitBtn.style.display = 'inline-block';
     }
 
     clearInput() {

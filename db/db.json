@@ -1,9 +1,39 @@
 {
   "posts": [
     {
-      "title": "Post One",
-      "body": "This is the first post",
+      "title": "test",
+      "body": "this is a test",
       "id": 1
+    },
+    {
+      "title": "post",
+      "body": "today is a good day",
+      "id": 2
+    },
+    {
+      "title": "test 2",
+      "body": "this is the second test",
+      "id": 3
+    },
+    {
+      "title": "test 3",
+      "body": "this is the third test",
+      "id": 4
+    },
+    {
+      "title": "post 2",
+      "body": "this is the second post",
+      "id": 5
+    },
+    {
+      "title": "Post 3",
+      "body": "this is the third post",
+      "id": 6
+    },
+    {
+      "title": "post 4",
+      "body": "this is the fourth post",
+      "id": 7
     }
   ]
 }

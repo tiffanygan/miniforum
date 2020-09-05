@@ -2,7 +2,7 @@ import UIController from "./ui/UIController";
 import EasyHTTP from "./lib/EasyHTTP";
 
 const ui = new UIController(document);
-const httpClient = new EasyHTTP("http://localhost:3000/posts");
+const postClient = new EasyHTTP("http://localhost:3000/posts");
 showPosts();
 
 ui.submitBtn.addEventListener('click', () => {
@@ -10,28 +10,35 @@ ui.submitBtn.addEventListener('click', () => {
     if (!post) {
         return;
     }
-    httpClient.post(post);
+    postClient.post(post);
     ui.clearInput();
     showPosts();
 });
 
 ui.postArea.addEventListener('click', e => {
     if (e.target.classList.contains('fa-trash')) {
-        httpClient.delete(e.target.parentElement.parentElement.id);
+        postClient.delete(e.target.parentElement.parentElement.id);
         showPosts();
     }
 });
 
 ui.postArea.addEventListener('click', e => {
     if (e.target.classList.contains('fa-pen')) {
-        httpClient.getPost(e.target.parentElement.parentElement.id).then(post => {
-            console.log(post)
-            ui.fillInput(post);
-            
+        postClient.getById(e.target.parentElement.parentElement.id).then(post => {
+            ui.editPost(post);
         });
     }
 });
 
+ui.cancelBtn.addEventListener('click', () => ui.addNewPost());
+
+ui.updateBtn.addEventListener('click', async e => {
+    const post = ui.createPost();
+    await postClient.update(parseInt(e.target.dataset.id), post);
+    ui.addNewPost();
+    showPosts();
+});
+
 function showPosts() {
-    httpClient.get().then((posts) => ui.showPosts(posts));
+    postClient.get().then((posts) => ui.showPosts(posts));
 }

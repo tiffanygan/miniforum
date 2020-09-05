@@ -8,7 +8,7 @@ export default class EasyHTTP {
         return await res.json();
     }
 
-    async getPost(id) {
+    async getById(id) {
         const res = await fetch(this.url + `/${id}`);
         return await res.json();
     }
@@ -28,7 +28,7 @@ export default class EasyHTTP {
     }
     
     update(id, post) {
-        fetch(this.url + `/${id}`, {
+        return fetch(this.url + `/${id}`, {
             method: 'PUT',
             body: JSON.stringify(post),
             headers: {'Content-Type': 'application/json'}
