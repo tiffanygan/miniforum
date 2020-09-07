@@ -1,8 +1,10 @@
 import UIController from "./ui/UIController";
 import EasyHTTP from "./lib/EasyHTTP";
+import UserService from './services/UserService';
 
 const ui = new UIController(document);
 const postClient = new EasyHTTP("http://localhost:3000/posts");
+const userService = new UserService();
 showPosts();
 
 ui.submitBtn.addEventListener('click', () => {
@@ -11,7 +13,7 @@ ui.submitBtn.addEventListener('click', () => {
         return;
     }
     postClient.post(post);
-    ui.clearInput();
+    ui.clearPostInput();
     showPosts();
 });
 
@@ -37,6 +39,20 @@ ui.updateBtn.addEventListener('click', async e => {
     await postClient.update(parseInt(e.target.dataset.id), post);
     ui.addNewPost();
     showPosts();
+});
+
+ui.signUpBtn.addEventListener('click', async () => {
+    const user = ui.createUser();
+    if (!user) {
+        return;
+    }
+
+    if (await userService.addUser(user)) {
+        ui.clearSignUpInput();
+        return;
+    }
+
+    ui.signUpFaliure();
 });
 
 function showPosts() {

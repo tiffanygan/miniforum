@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "(json-server --watch db/db.json &) && webpack-dev-server --output-public-path=/build/  --mode development --progress --open --hot",
-    "build": "webpack --mode production --progress"
+    "build": "webpack --mode production --progress",
+    "json-server": "json-server --watch db/db.json"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/tiffanygan/miniforum#readme",
   "dependencies": {
-    "json-server": "^0.16.1"
+    "json-server": "^0.16.1",
+    "md5": "^2.3.0"
   }
 }

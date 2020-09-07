@@ -13,10 +13,10 @@ export default class EasyHTTP {
         return await res.json();
     }
 
-    post(post) {
+    post(item) {
         fetch(this.url, {
             method: 'POST',
-            body: JSON.stringify(post),
+            body: JSON.stringify(item),
             headers: {'Content-Type': 'application/json'}
         });
     }
@@ -27,10 +27,10 @@ export default class EasyHTTP {
         });
     }
     
-    update(id, post) {
+    update(id, item) {
         return fetch(this.url + `/${id}`, {
             method: 'PUT',
-            body: JSON.stringify(post),
+            body: JSON.stringify(item),
             headers: {'Content-Type': 'application/json'}
         });
     }

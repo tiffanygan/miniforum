@@ -3,4 +3,8 @@ export default class Post {
         this.title = title;
         this.body = body;
     }
+
+    setId(id) {
+        this.id = id;
+    }
 }
