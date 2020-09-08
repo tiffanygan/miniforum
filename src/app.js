@@ -42,18 +42,37 @@ ui.updateBtn.addEventListener('click', async e => {
 });
 
 ui.signUpBtn.addEventListener('click', async () => {
-    const user = ui.createUser();
+    if (!ui.signUpCheckIfInputFilled()) {
+        return;
+    }
+
+    const user = ui.signUpCreateUser();
     if (!user) {
         return;
     }
 
     if (await userService.addUser(user)) {
         ui.clearSignUpInput();
+        ui.showSuccessAlert();
         return;
     }
 
     ui.signUpFaliure();
 });
+
+ui.logInBtn.addEventListener('click', () => {
+    if (!ui.logInCheckIfInputFilled()) {
+        return;
+    }
+
+    if (!userService.getUser(ui.logInEmailInput.value)) {
+        ui.logInFaliure();
+        return;
+    }
+
+    ui.logInClearInputs();
+    ui.showSuccessAlert();
+})
 
 function showPosts() {
     postClient.get().then((posts) => ui.showPosts(posts));

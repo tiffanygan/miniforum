@@ -23,15 +23,15 @@
   ],
   "users": [
     {
-      "username": "Tiffany",
-      "email": "tiffanygan2015@gmail.com",
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "username": "test",
+      "email": "test@test",
+      "password": "098f6bcd4621d373cade4e832627b4f6",
       "id": 1
     },
     {
-      "username": "",
-      "email": "",
-      "password": "d41d8cd98f00b204e9800998ecf8427e",
+      "username": "a",
+      "email": "a@a",
+      "password": "0cc175b9c0f1b6a831c399e269772661",
       "id": 2
     }
   ]

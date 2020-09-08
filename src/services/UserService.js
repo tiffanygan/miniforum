@@ -21,4 +21,11 @@ export default class UserService {
     async init() {
         this.users = await this.userClient.get();
     }
+
+    getUser(email) {
+        if (this.users.map(user => user.email).includes(email)) {
+            return true;
+        }
+        return false;
+    }
 }

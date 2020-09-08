@@ -18,29 +18,17 @@
         crossorigin="anonymous"></script>
     <script defer src="./build/app.bundle.js"></script>
     <style>
-        #cancel,
-        #update {
-            display: none;
-        }
+        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-no-user, #success { display: none; }
 
-        .fas:hover {
-            cursor: pointer;
-        }
+        .fas:hover { cursor: pointer; }
 
-        #log-in {
-            margin-right: 1rem;
-        }
+        #log-in { margin-right: 1rem; }
 
-        #log-in:hover,
-        #sign-up:hover {
-            color: white !important;
-        }
+        #log-in:hover, #sign-up:hover { color: white !important; }
 
-        .navbar-nav * {
-            margin-right: 0.5rem;
-        }
+        .navbar-nav * { margin-right: 0.5rem; }
 
-        #password-alert, #email-alert {
+        #password-alert, #email-alert, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-no-user {
             padding: 0.5rem !important;
             display: none;
         }
@@ -77,6 +65,7 @@
     </nav>
 
     <div class="container mt-3">
+        <div class="alert alert-primary text-center mt-3" id="success">Nice to see you!</div>
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">What's on your mind?</h2>
@@ -110,6 +99,8 @@
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-danger mt-3 text-center" id="log-in-not-filled-alert">Please fill in all inputs</div>
+                    <div class="alert alert-danger mt-3 text-center" id="log-in-no-user">This user does not yet exist. Try <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Signing up here instead</a></div>
                     <form>
                         <div class="form-group">
                             <label for="log-in-email">Email</label>
@@ -124,8 +115,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="log-in-btn">Log in</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <p>Don't have an account? <a href="#" data-toggle="modal" data-target="#sign-up-modal"
-                            data-dismiss="modal">Sign up here</a></p>
+                    <p>Don't have an account? <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Sign up here</a></p>
                 </div>
             </div>
         </div>
@@ -140,6 +130,7 @@
                 </div>
                 <form>
                     <div class="modal-body">
+                        <div class="alert alert-danger mt-3 text-center" id="sign-in-not-filled-alert">Please fill in all inputs</div>
                         <div class="form-group">
                             <label for="sign-up-email">Email</label>
                             <input type="email" id="sign-up-email" class="form-control">
@@ -156,7 +147,7 @@
                         <div class="form-group">
                             <label for="confirm-password">Confirm Password</label>
                             <input type="password" id="confirm-password" class="form-control">
-                            <div class="alert alert-danger mt-3 text-center" role="alert" id="password-alert">Passwords are not the same</div>
+                            <div class="alert alert-danger mt-3 text-center" id="password-alert">Passwords are not the same</div>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -5,6 +5,7 @@ import md5 from "md5";
 export default class UIController {
     constructor(document) {
         this.document = document;
+        this.successAlert = this.document.getElementById('success');
 
         this.submitBtn = this.document.getElementById('submit');
         this.cancelBtn = this.document.getElementById('cancel');
@@ -17,11 +18,18 @@ export default class UIController {
         this.signUpEmailInput = this.document.getElementById('sign-up-email');
         this.signUpPasswordInput = this.document.getElementById('sign-up-password');
         this.signUpConfirmPasswordInput = this.document.getElementById('confirm-password');
-        this.logInBtn = this.document.getElementById('log-in-btn');
         this.signUpBtn = this.document.getElementById('sign-up-btn');
         this.passwordAlert = this.document.getElementById('password-alert');
         this.emailAlert = this.document.getElementById('email-alert');
+        this.signInNotFilledAlert = this.document.getElementById('sign-in-not-filled-alert')
         this.signUpModal = $('#sign-up-modal');
+        
+        this.logInEmailInput = this.document.getElementById('log-in-email');
+        this.logInPasswordInput = this.document.getElementById('log-in-password');
+        this.logInBtn = this.document.getElementById('log-in-btn');
+        this.logInNotFilledAlert = this.document.getElementById('log-in-not-filled-alert');
+        this.userNotExistAlert = this.document.getElementById('log-in-no-user');
+        this.logInModal = $('#log-in-modal');
     }
 
     showPosts(posts) {
@@ -59,7 +67,7 @@ export default class UIController {
         return new Post(this.titleInput.value, this.bodyInput.value);
     }
 
-    createUser() {
+    signUpCreateUser() {
         if (this.checkPasswords()) {
             const password = this.signUpPasswordInput.value;
             return new User(this.signUpUsernameInput.value, this.signUpEmailInput.value, md5(password));
@@ -122,5 +130,39 @@ export default class UIController {
         this.signUpPasswordInput.value = '';
         this.signUpConfirmPasswordInput.value = '';
         this.signUpModal.modal('hide');
+    }
+
+    signUpCheckIfInputFilled() {
+        if ((this.signUpEmailInput.value === '') || (this.signUpUsernameInput.value === '') || (this.signUpPasswordInput.value === '') || (this.signUpConfirmPasswordInput.value === '')) {
+            this.signInNotFilledAlert.style.display = 'block';
+            setTimeout(() => this.signInNotFilledAlert.style.display = 'none', 2000);
+            return false;
+        }
+        return true;
+    }
+
+    logInCheckIfInputFilled() {
+        if ((this.logInEmailInput.value === '') || (this.logInPasswordInput.value === '')) {
+            this.logInNotFilledAlert.style.display = 'block';
+            setTimeout(() => this.logInNotFilledAlert.style.display = 'none', 2000);
+            return false;
+        }
+        return true;
+    }
+
+    logInFaliure() {
+        this.userNotExistAlert.style.display = 'block';
+        setTimeout(() => this.userNotExistAlert.style.display = 'none', 3000);
+    }
+
+    logInClearInputs() {
+        this.logInEmailInput.value = '';
+        this.logInPasswordInput.value = '';
+        this.logInModal.modal('hide');
+    }
+
+    showSuccessAlert() {
+        this.successAlert.style.display = 'block';
+        setTimeout(() => this.successAlert.style.display = 'none', 3000);
     }
 }
