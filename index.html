@@ -18,7 +18,7 @@
         crossorigin="anonymous"></script>
     <script defer src="./build/app.bundle.js"></script>
     <style>
-        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-no-user, #success { display: none; }
+        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success{ display: none; }
 
         .fas:hover { cursor: pointer; }
 
@@ -100,7 +100,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger mt-3 text-center" id="log-in-not-filled-alert">Please fill in all inputs</div>
-                    <div class="alert alert-danger mt-3 text-center" id="log-in-no-user">This user does not yet exist. Try <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Signing up here instead</a></div>
+                    <div class="alert alert-danger mt-3 text-center" id="log-in-failure">
+                        <p id="log-in-failure-message"></p>
+                        <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Sign up here instead</a>
+                    </div>
                     <form>
                         <div class="form-group">
                             <label for="log-in-email">Email</label>

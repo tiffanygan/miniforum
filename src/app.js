@@ -1,6 +1,6 @@
 import UIController from "./ui/UIController";
 import EasyHTTP from "./lib/EasyHTTP";
-import UserService from './services/UserService';
+import UserService, { NO_ACCOUNT, PASSWORD_WRONG } from './services/UserService';
 
 const ui = new UIController(document);
 const postClient = new EasyHTTP("http://localhost:3000/posts");
@@ -60,18 +60,21 @@ ui.signUpBtn.addEventListener('click', async () => {
     ui.signUpFaliure();
 });
 
-ui.logInBtn.addEventListener('click', () => {
+ui.logInBtn.addEventListener('click', async () => {
     if (!ui.logInCheckIfInputFilled()) {
         return;
     }
 
-    if (!userService.getUser(ui.logInEmailInput.value)) {
-        ui.logInFaliure();
-        return;
-    }
+    const checkStatus = await userService.checkUser(ui.logInEmailInput.value, ui.logInPasswordInput.value);
 
-    ui.logInClearInputs();
-    ui.showSuccessAlert();
+    if (checkStatus === NO_ACCOUNT) {
+        ui.logInFaliure('User does not exist.');
+    } else if (checkStatus === PASSWORD_WRONG) {
+        ui.logInFaliure('Password is wrong');
+    } else {
+        ui.logInClearInputs();
+        ui.showSuccessAlert();
+    }
 })
 
 function showPosts() {

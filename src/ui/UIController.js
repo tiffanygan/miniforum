@@ -1,6 +1,5 @@
 import Post from "../model/Post";
 import User from '../model/User';
-import md5 from "md5";
 
 export default class UIController {
     constructor(document) {
@@ -28,7 +27,8 @@ export default class UIController {
         this.logInPasswordInput = this.document.getElementById('log-in-password');
         this.logInBtn = this.document.getElementById('log-in-btn');
         this.logInNotFilledAlert = this.document.getElementById('log-in-not-filled-alert');
-        this.userNotExistAlert = this.document.getElementById('log-in-no-user');
+        this.logInFailure = this.document.getElementById('log-in-failure');
+        this.logInFailureText = this.document.getElementById('log-in-failure-message')
         this.logInModal = $('#log-in-modal');
     }
 
@@ -69,10 +69,13 @@ export default class UIController {
 
     signUpCreateUser() {
         if (this.checkPasswords()) {
-            const password = this.signUpPasswordInput.value;
-            return new User(this.signUpUsernameInput.value, this.signUpEmailInput.value, md5(password));
+            return new User(this.signUpUsernameInput.value, this.signUpEmailInput.value, this.signUpPasswordInput.value);
         }
         return null;
+    }
+
+    logInCreateUser() {
+        return new User()
     }
 
     editPost(post) {
@@ -150,9 +153,10 @@ export default class UIController {
         return true;
     }
 
-    logInFaliure() {
-        this.userNotExistAlert.style.display = 'block';
-        setTimeout(() => this.userNotExistAlert.style.display = 'none', 3000);
+    logInFaliure(message) {
+        this.logInFailure.style.display = 'block';
+        this.logInFailureText.textContent = message;
+        setTimeout(() => this.logInFailure.style.display = 'none', 3000);
     }
 
     logInClearInputs() {

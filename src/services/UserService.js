@@ -1,31 +1,41 @@
 import EasyHTTP from '../lib/EasyHTTP';
+import User from '../model/User';
+import md5 from 'md5';
+
+export const PASSWORD_WRONG = 1;
+export const NO_ACCOUNT = 2;
+export const LOGIN_SUCCESS = 0;
 
 export default class UserService {
     constructor() {
         this.userClient = new EasyHTTP('http://localhost:3000/users');
-        this.initialized = this.init();
     }
     
     async addUser(user) {
-        await this.initialized;
+        const users = await this.userClient.get();
 
-        if (this.users.map(currUser => currUser.email).includes(user.email)) {
+        if (users.map(currUser => currUser.email).includes(user.email)) {
             return false;
         }
 
-        this.users.push(user);
+        user.password = md5(user.password);
+
         this.userClient.post(user);
         return true;
     }
     
-    async init() {
-        this.users = await this.userClient.get();
-    }
+    async checkUser(email, password) {
+        const users = await this.userClient.get();
+        const user = users.find(currUser => currUser.email === email);
 
-    getUser(email) {
-        if (this.users.map(user => user.email).includes(email)) {
-            return true;
+        if (user && user.password === md5(password)) {
+            return LOGIN_SUCCESS;
         }
-        return false;
+
+        if (!user) {
+            return NO_ACCOUNT;
+        }
+
+        return PASSWORD_WRONG;
     }
 }
