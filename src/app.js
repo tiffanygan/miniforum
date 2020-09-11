@@ -2,13 +2,19 @@ import UIController from "./ui/UIController";
 import EasyHTTP from "./lib/EasyHTTP";
 import UserService, { NO_ACCOUNT, PASSWORD_WRONG } from './services/UserService';
 
+let currUser = null;
+
 const ui = new UIController(document);
 const postClient = new EasyHTTP("http://localhost:3000/posts");
 const userService = new UserService();
 showPosts();
 
-ui.submitBtn.addEventListener('click', () => {
-    const post = ui.createPost();
+ui.submitBtn.addEventListener('click', async () => {
+    if (!currUser) {
+        return;
+    }
+
+    const post = ui.createPost(user.username);
     if (!post) {
         return;
     }
@@ -51,9 +57,11 @@ ui.signUpBtn.addEventListener('click', async () => {
         return;
     }
 
-    if (await userService.addUser(user)) {
+    const createdUser = await userService.addUser(user);
+    if (createdUser) {
         ui.clearSignUpInput();
         ui.showSuccessAlert();
+        currUser = createdUser;
         return;
     }
 
@@ -72,6 +80,7 @@ ui.logInBtn.addEventListener('click', async () => {
     } else if (checkStatus === PASSWORD_WRONG) {
         ui.logInFaliure('Password is wrong');
     } else {
+        currUser = userService.getUserByEmail(ui.logInEmailInput.value);
         ui.logInClearInputs();
         ui.showSuccessAlert();
     }

@@ -13,15 +13,14 @@ export default class UserService {
     
     async addUser(user) {
         const users = await this.userClient.get();
-
+        
         if (users.map(currUser => currUser.email).includes(user.email)) {
-            return false;
+            return null;
         }
 
         user.password = md5(user.password);
-
-        this.userClient.post(user);
-        return true;
+        const postedUser = await this.userClient.post(user);
+        return postedUser;
     }
     
     async checkUser(email, password) {
@@ -37,5 +36,15 @@ export default class UserService {
         }
 
         return PASSWORD_WRONG;
+    }
+
+    async getUserByEmail(email) {
+        const users = await this.userClient.get();
+        const user = users.find(currUser => currUser.email = email);
+
+        if (user) {
+            return user;
+        }
+        return false;
     }
 }

@@ -13,12 +13,13 @@ export default class EasyHTTP {
         return await res.json();
     }
 
-    post(item) {
-        fetch(this.url, {
+    async post(item) {
+        const res = await fetch(this.url, {
             method: 'POST',
             body: JSON.stringify(item),
             headers: {'Content-Type': 'application/json'}
         });
+        return await res.json();
     }
     
     delete(id) {

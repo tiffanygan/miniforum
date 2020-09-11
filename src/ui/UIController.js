@@ -44,6 +44,8 @@ export default class UIController {
             title.classList = 'card-title';
             title.textContent = post.title;
             const postBody = document.createElement('p');
+            const author = document.createElement('p');
+            author.textContent = `Posted by: ${post.author}`;
             const editIcon = document.createElement('i');
             editIcon.classList = 'fas fa-pen text-primary';
             editIcon.style.marginRight = '1rem';
@@ -52,6 +54,7 @@ export default class UIController {
             postBody.textContent = post.body;
             cardBody.appendChild(title);
             cardBody.appendChild(postBody);
+            cardBody.appendChild(author);
             cardBody.appendChild(editIcon);
             cardBody.appendChild(deleteIcon);
             card.appendChild(cardBody);
@@ -63,8 +66,11 @@ export default class UIController {
         Array.from(this.postArea.childNodes).forEach(ele => ele.remove());
     }
 
-    createPost() {
-        return new Post(this.titleInput.value, this.bodyInput.value);
+    createPost(author) {
+        if (this.titleInput.value === null || this.bodyInput.value === null) {
+            return false;
+        }
+        return new Post(this.titleInput.value, this.bodyInput.value, author);
     }
 
     signUpCreateUser() {

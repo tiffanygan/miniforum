@@ -19,6 +19,12 @@
       "title": "post 4",
       "body": "this is the fourth post",
       "id": 7
+    },
+    {
+      "title": "test",
+      "body": "this is a test",
+      "author": "test",
+      "id": 8
     }
   ],
   "users": [
@@ -33,6 +39,24 @@
       "email": "a@a",
       "password": "0cc175b9c0f1b6a831c399e269772661",
       "id": 2
+    },
+    {
+      "username": "b",
+      "email": "b@b",
+      "password": "92eb5ffee6ae2fec3ad71c777531578f",
+      "id": 3
+    },
+    {
+      "username": "c",
+      "email": "c@c",
+      "password": "4a8a08f09d37b73795649038408b5f33",
+      "id": 4
+    },
+    {
+      "username": "d",
+      "email": "d@d",
+      "password": "8277e0910d750195b448797616e091ad",
+      "id": 5
     }
   ]
 }
