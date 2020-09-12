@@ -57,15 +57,24 @@ ui.signUpBtn.addEventListener('click', async () => {
         return;
     }
 
+    if (! await userService.checkEmail(user)) {
+        ui.signUpShowEmailAlert();
+        return;
+    }
+
+    if (! await userService.checkUsername(user)) {
+        ui.signUpShowUsernameAlert();
+        return;
+    }
+
     const createdUser = await userService.addUser(user);
     if (createdUser) {
         ui.clearSignUpInput();
         ui.showSuccessAlert();
         currUser = createdUser;
+        showPosts();
         return;
     }
-
-    ui.signUpFaliure();
 });
 
 ui.logInBtn.addEventListener('click', async () => {
@@ -80,12 +89,13 @@ ui.logInBtn.addEventListener('click', async () => {
     } else if (checkStatus === PASSWORD_WRONG) {
         ui.logInFaliure('Password is wrong');
     } else {
-        currUser = userService.getUserByEmail(ui.logInEmailInput.value);
+        currUser = await userService.getUserByEmail(ui.logInEmailInput.value);
         ui.logInClearInputs();
         ui.showSuccessAlert();
+        showPosts();
     }
 })
 
 function showPosts() {
-    postClient.get().then((posts) => ui.showPosts(posts));
+    postClient.get().then((posts) => ui.showPosts(posts, currUser));
 }

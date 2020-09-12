@@ -20,6 +20,7 @@ export default class UIController {
         this.signUpBtn = this.document.getElementById('sign-up-btn');
         this.passwordAlert = this.document.getElementById('password-alert');
         this.emailAlert = this.document.getElementById('email-alert');
+        this.usernameAlert = this.document.getElementById('username-alert');
         this.signInNotFilledAlert = this.document.getElementById('sign-in-not-filled-alert')
         this.signUpModal = $('#sign-up-modal');
         
@@ -32,7 +33,7 @@ export default class UIController {
         this.logInModal = $('#log-in-modal');
     }
 
-    showPosts(posts) {
+    showPosts(posts, currUser) {
         this.clearPosts();
         posts.forEach(post => {
             const card = document.createElement('div');
@@ -52,6 +53,10 @@ export default class UIController {
             const deleteIcon = document.createElement('i');
             deleteIcon.classList = 'fas fa-trash text-danger';
             postBody.textContent = post.body;
+            if (!currUser || post.author !== currUser.username) {
+                editIcon.style.display = 'none';
+                deleteIcon.style.display = 'none';
+            }
             cardBody.appendChild(title);
             cardBody.appendChild(postBody);
             cardBody.appendChild(author);
@@ -122,14 +127,24 @@ export default class UIController {
 
         return false;
     }
-
-    signUpFaliure() {
+    
+    signUpShowEmailAlert() {
         this.signUpEmailInput.style.boxShadow = '2px 3px red';
         this.emailAlert.style.display = 'block';
 
         setTimeout(() => {
             this.signUpEmailInput.style.boxShadow = 'none';
             this.emailAlert.style.display = 'none';
+        }, 2000);
+    }
+
+    signUpShowUsernameAlert() {
+        this.signUpUsernameInput.style.boxShadow = '2px 3px red';
+        this.usernameAlert.style.display = 'block';
+
+        setTimeout(() => {
+            this.signUpUsernameInput.style.boxShadow = 'none';
+            this.usernameAlert.style.display = 'none';
         }, 2000);
     }
 
