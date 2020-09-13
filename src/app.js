@@ -1,40 +1,40 @@
 import UIController from "./ui/UIController";
 import EasyHTTP from "./lib/EasyHTTP";
 import UserService, { NO_ACCOUNT, PASSWORD_WRONG } from './services/UserService';
+import PostService from './services/PostService';
 
 let currUser = null;
-
 const ui = new UIController(document);
 const postClient = new EasyHTTP("http://localhost:3000/posts");
 const userService = new UserService();
-showPosts();
+const postService = new PostService();
+initPage();
 
 ui.submitBtn.addEventListener('click', async () => {
     if (!currUser) {
         return;
     }
 
-    const post = ui.createPost(user.username);
+    const post = ui.createPost(currUser.username);
     if (!post) {
         return;
     }
     postClient.post(post);
     ui.clearPostInput();
-    showPosts();
+    initPage();
 });
 
 ui.postArea.addEventListener('click', e => {
     if (e.target.classList.contains('fa-trash')) {
         postClient.delete(e.target.parentElement.parentElement.id);
-        showPosts();
+        initPage();
     }
 });
 
-ui.postArea.addEventListener('click', e => {
+ui.postArea.addEventListener('click', async e => {
     if (e.target.classList.contains('fa-pen')) {
-        postClient.getById(e.target.parentElement.parentElement.id).then(post => {
-            ui.editPost(post);
-        });
+        const post = await postClient.getById(e.target.parentElement.parentElement.id);
+        ui.editPost(post);
     }
 });
 
@@ -44,7 +44,7 @@ ui.updateBtn.addEventListener('click', async e => {
     const post = ui.createPost();
     await postClient.update(parseInt(e.target.dataset.id), post);
     ui.addNewPost();
-    showPosts();
+    initPage();
 });
 
 ui.signUpBtn.addEventListener('click', async () => {
@@ -72,7 +72,7 @@ ui.signUpBtn.addEventListener('click', async () => {
         ui.clearSignUpInput();
         ui.showSuccessAlert();
         currUser = createdUser;
-        showPosts();
+        initPage();
         return;
     }
 });
@@ -92,10 +92,25 @@ ui.logInBtn.addEventListener('click', async () => {
         currUser = await userService.getUserByEmail(ui.logInEmailInput.value);
         ui.logInClearInputs();
         ui.showSuccessAlert();
-        showPosts();
+        initPage();
     }
 })
 
-function showPosts() {
-    postClient.get().then((posts) => ui.showPosts(posts, currUser));
+async function initPage() {
+    const posts = await postClient.get();
+    ui.showPosts(posts, currUser);
+
+    window.htmlCollection = document.getElementsByClassName('post');
+    Array.from(window.htmlCollection).forEach(post => post.addEventListener('click', async () => {
+        const currPost = await postService.getPostById(post.id);
+        ui.showPostModal(currPost);
+    }));
+
+    if (!currUser) {
+        ui.postForm.style.display = 'none';
+        ui.postHereBtn.style.display = 'block';
+        return;
+    }
+    ui.postForm.style.display = 'block';
+    ui.postHereBtn.style.display = 'none';
 }

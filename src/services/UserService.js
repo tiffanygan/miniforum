@@ -1,5 +1,4 @@
 import EasyHTTP from "../lib/EasyHTTP";
-import User from "../model/User";
 import md5 from "md5";
 
 export const PASSWORD_WRONG = 1;

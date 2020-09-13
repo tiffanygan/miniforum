@@ -18,7 +18,7 @@
         crossorigin="anonymous"></script>
     <script defer src="./build/app.bundle.js"></script>
     <style>
-        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success { display: none; }
+        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success, #post-here-btn { display: none; }
 
         .fas:hover { cursor: pointer; }
 
@@ -31,6 +31,15 @@
         #password-alert, #email-alert, #username-alert, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-no-user {
             padding: 0.5rem !important;
             display: none;
+        }
+
+        .modal-lg {
+            max-width: 90%;
+            height: 90%;
+        }
+
+        .modal-content {
+            height: 100%;
         }
 
         @media(min-width: 800px) {
@@ -66,7 +75,7 @@
 
     <div class="container mt-3">
         <div class="alert alert-primary text-center mt-3" id="success">Nice to see you!</div>
-        <div class="card">
+        <div class="card" id="post-form">
             <div class="card-body">
                 <h2 class="card-title">What's on your mind?</h2>
                 <form>
@@ -87,11 +96,13 @@
                 </form>
             </div>
         </div>
+        <button type="button" class="btn btn-primary mx-auto mb-3" id="post-here-btn" data-toggle="modal" data-target="#log-in-modal">Something on your mind? Post it here!</button>
+        <h3 class="mt-3">Posts</h3>
         <div id="post-area" class="mb-5"></div>
     </div>
 
     <!-- Modals -->
-    <div class="modal" id="log-in-modal" tabindex="-1">
+    <div class="modal fade" id="log-in-modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -124,7 +135,7 @@
         </div>
     </div>
 
-    <div class="modal" id="sign-up-modal" tabindex="-1">
+    <div class="modal fade" id="sign-up-modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -162,6 +173,24 @@
                         <p>Already have an account? <a href="#" data-toggle="modal" data-target="#log-in-modal" data-dismiss="modal">Log in here</a></p>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="post-modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="post-modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p id="post-modal-body"></p>
+                    <p id="post-modal-author"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

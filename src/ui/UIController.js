@@ -5,6 +5,7 @@ export default class UIController {
     constructor(document) {
         this.document = document;
         this.successAlert = this.document.getElementById('success');
+        this.postHereBtn = this.document.getElementById('post-here-btn');
 
         this.submitBtn = this.document.getElementById('submit');
         this.cancelBtn = this.document.getElementById('cancel');
@@ -12,6 +13,7 @@ export default class UIController {
         this.postArea = this.document.getElementById('post-area');
         this.titleInput = this.document.getElementById('title');
         this.bodyInput = this.document.getElementById('content');
+        this.postForm = this.document.getElementById('post-form');
 
         this.signUpUsernameInput = this.document.getElementById('sign-up-username');
         this.signUpEmailInput = this.document.getElementById('sign-up-email');
@@ -31,20 +33,27 @@ export default class UIController {
         this.logInFailure = this.document.getElementById('log-in-failure');
         this.logInFailureText = this.document.getElementById('log-in-failure-message')
         this.logInModal = $('#log-in-modal');
+
+        this.postModalTitle = this.document.getElementById('post-modal-title');
+        this.postModalBody = this.document.getElementById('post-modal-body');
+        this.postModalAuthor = this.document.getElementById('post-modal-author');
     }
 
     showPosts(posts, currUser) {
         this.clearPosts();
         posts.forEach(post => {
             const card = document.createElement('div');
-            card.classList = 'card mt-3';
+            card.classList = 'card mt-3 post';
             card.id = post.id;
+            card.setAttribute('data-toggle', 'modal');
+            card.setAttribute('data-target', '#post-modal');
             const cardBody = document.createElement('div');
             cardBody.classList = 'card-body';
             const title = document.createElement('h3');
             title.classList = 'card-title';
             title.textContent = post.title;
             const postBody = document.createElement('p');
+            postBody.style.whiteSpace = 'pre-wrap';
             const author = document.createElement('p');
             author.textContent = `Posted by: ${post.author}`;
             const editIcon = document.createElement('i');
@@ -53,6 +62,9 @@ export default class UIController {
             const deleteIcon = document.createElement('i');
             deleteIcon.classList = 'fas fa-trash text-danger';
             postBody.textContent = post.body;
+            if (post.body.split(/\r\n|\r|\n/).length > 1) {
+                postBody.textContent = post.body.split(/\r\n|\r|\n/)[0] + '...';
+            }
             if (!currUser || post.author !== currUser.username) {
                 editIcon.style.display = 'none';
                 deleteIcon.style.display = 'none';
@@ -189,5 +201,12 @@ export default class UIController {
     showSuccessAlert() {
         this.successAlert.style.display = 'block';
         setTimeout(() => this.successAlert.style.display = 'none', 3000);
+    }
+
+    showPostModal(post) {
+        this.postModalTitle.textContent = post.title;
+        this.postModalBody.textContent = post.body;
+        this.postModalBody.style.whiteSpace = 'pre-wrap'
+        this.postModalAuthor.textContent = `Posted by: ${post.author}`;
     }
 }
