@@ -22,14 +22,14 @@ export default class EasyHTTP {
         return await res.json();
     }
     
-    delete(id) {
-        fetch(this.url + `/${id}`, {
+    async delete(id) {
+        await fetch(this.url + `/${id}`, {
             method: 'DELETE'
         });
     }
     
-    update(id, item) {
-        return fetch(this.url + `/${id}`, {
+    async update(id, item) {
+        return await fetch(this.url + `/${id}`, {
             method: 'PUT',
             body: JSON.stringify(item),
             headers: {'Content-Type': 'application/json'}

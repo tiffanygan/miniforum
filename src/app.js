@@ -3,7 +3,8 @@ import EasyHTTP from "./lib/EasyHTTP";
 import UserService, { NO_ACCOUNT, PASSWORD_WRONG } from './services/UserService';
 import PostService from './services/PostService';
 
-let currUser = null;
+let currUser = JSON.parse(localStorage.getItem('currUser'));
+
 const ui = new UIController(document);
 const postClient = new EasyHTTP("http://localhost:3000/posts");
 const userService = new UserService();
@@ -19,14 +20,14 @@ ui.submitBtn.addEventListener('click', async () => {
     if (!post) {
         return;
     }
-    postClient.post(post);
+    await postClient.post(post);
     ui.clearPostInput();
     initPage();
 });
 
-ui.postArea.addEventListener('click', e => {
+ui.postArea.addEventListener('click', async e => {
     if (e.target.classList.contains('fa-trash')) {
-        postClient.delete(e.target.parentElement.parentElement.id);
+        await postClient.delete(e.target.parentElement.parentElement.id);
         initPage();
     }
 });
@@ -34,16 +35,18 @@ ui.postArea.addEventListener('click', e => {
 ui.postArea.addEventListener('click', async e => {
     if (e.target.classList.contains('fa-pen')) {
         const post = await postClient.getById(e.target.parentElement.parentElement.id);
-        ui.editPost(post);
+        ui.printPost(post);
     }
 });
 
-ui.cancelBtn.addEventListener('click', () => ui.addNewPost());
+ui.cancelBtn.addEventListener('click', () => {
+    ui.addNewPostView()
+});
 
 ui.updateBtn.addEventListener('click', async e => {
-    const post = ui.createPost();
+    const post = ui.createPost(currUser.username);
     await postClient.update(parseInt(e.target.dataset.id), post);
-    ui.addNewPost();
+    ui.addNewPostView();
     initPage();
 });
 
@@ -72,7 +75,9 @@ ui.signUpBtn.addEventListener('click', async () => {
         ui.clearSignUpInput();
         ui.showSuccessAlert();
         currUser = createdUser;
+        localStorage.setItem('currUser', JSON.stringify(currUser));
         initPage();
+        ui.welcomeUser(currUser);
         return;
     }
 });
@@ -90,27 +95,42 @@ ui.logInBtn.addEventListener('click', async () => {
         ui.logInFaliure('Password is wrong');
     } else {
         currUser = await userService.getUserByEmail(ui.logInEmailInput.value);
+        localStorage.setItem('currUser', JSON.stringify(currUser));
         ui.logInClearInputs();
         ui.showSuccessAlert();
         initPage();
+        ui.welcomeUser(currUser);
     }
+})
+
+ui.logOutBtn.addEventListener('click', () => {
+    ui.logOut();
+    currUser = null;
+    localStorage.setItem('currUser', JSON.stringify(currUser));
+    initPage();
+})
+
+ui.postHereBtn.addEventListener('click', () => {
+    if (!currUser) {
+        ui.logInModal.modal('show');
+        return;
+    }
+    ui.postHereBtn.style.display = 'none';
+    ui.postForm.style.display = 'block';
 })
 
 async function initPage() {
     const posts = await postClient.get();
     ui.showPosts(posts, currUser);
 
-    window.htmlCollection = document.getElementsByClassName('post');
-    Array.from(window.htmlCollection).forEach(post => post.addEventListener('click', async () => {
+    const htmlCollection = document.getElementsByClassName('post');
+    Array.from(htmlCollection).forEach(post => post.addEventListener('click', async e => {
+        if (e.target.classList.contains('fas')) {
+            return;
+        }
         const currPost = await postService.getPostById(post.id);
         ui.showPostModal(currPost);
     }));
-
-    if (!currUser) {
-        ui.postForm.style.display = 'none';
-        ui.postHereBtn.style.display = 'block';
-        return;
-    }
-    ui.postForm.style.display = 'block';
-    ui.postHereBtn.style.display = 'none';
+    
+    ui.welcomeUser(currUser);
 }

@@ -6,6 +6,10 @@ export default class UIController {
         this.document = document;
         this.successAlert = this.document.getElementById('success');
         this.postHereBtn = this.document.getElementById('post-here-btn');
+        this.welcome = this.document.getElementById('welcome');
+        this.logOutBtn = this.document.getElementById('log-out-btn');
+        this.navbarLogIn = this.document.getElementById('navbar-log-in');
+        this.navbarSignUp = this.document.getElementById('navbar-sign-up');
 
         this.submitBtn = this.document.getElementById('submit');
         this.cancelBtn = this.document.getElementById('cancel');
@@ -37,6 +41,7 @@ export default class UIController {
         this.postModalTitle = this.document.getElementById('post-modal-title');
         this.postModalBody = this.document.getElementById('post-modal-body');
         this.postModalAuthor = this.document.getElementById('post-modal-author');
+        this.postModal = $('#post-modal');
     }
 
     showPosts(posts, currUser) {
@@ -45,37 +50,38 @@ export default class UIController {
             const card = document.createElement('div');
             card.classList = 'card mt-3 post';
             card.id = post.id;
-            card.setAttribute('data-toggle', 'modal');
-            card.setAttribute('data-target', '#post-modal');
+            const title = document.createElement('h4');
+            title.classList = 'card-header';
+            title.textContent = post.title;
             const cardBody = document.createElement('div');
             cardBody.classList = 'card-body';
-            const title = document.createElement('h3');
-            title.classList = 'card-title';
-            title.textContent = post.title;
+            const author = document.createElement('h5');
+            author.textContent = `Posted by: ${post.author}`;
+            author.classList = 'card-title text-muted';
             const postBody = document.createElement('p');
             postBody.style.whiteSpace = 'pre-wrap';
-            const author = document.createElement('p');
-            author.textContent = `Posted by: ${post.author}`;
-            const editIcon = document.createElement('i');
-            editIcon.classList = 'fas fa-pen text-primary';
-            editIcon.style.marginRight = '1rem';
-            const deleteIcon = document.createElement('i');
-            deleteIcon.classList = 'fas fa-trash text-danger';
-            postBody.textContent = post.body;
+            postBody.classList = 'card-text';
             if (post.body.split(/\r\n|\r|\n/).length > 1) {
                 postBody.textContent = post.body.split(/\r\n|\r|\n/)[0] + '...';
+            } else {
+                postBody.textContent = post.body;
             }
-            if (!currUser || post.author !== currUser.username) {
-                editIcon.style.display = 'none';
-                deleteIcon.style.display = 'none';
-            }
-            cardBody.appendChild(title);
+            card.appendChild(title);
             cardBody.appendChild(postBody);
             cardBody.appendChild(author);
-            cardBody.appendChild(editIcon);
-            cardBody.appendChild(deleteIcon);
+            if (currUser && post.author === currUser.username) {
+                const editIcon = document.createElement('i');
+                editIcon.classList = 'fas fa-pen text-primary';
+                editIcon.style.marginRight = '1rem';
+                const deleteIcon = document.createElement('i');
+                deleteIcon.classList = 'fas fa-trash text-danger';
+                cardBody.appendChild(editIcon);
+                cardBody.appendChild(deleteIcon);
+            }
             card.appendChild(cardBody);
             this.postArea.appendChild(card);
+            this.postForm.style.display = 'none';
+            this.postHereBtn.style.display = 'block';
         })
     }
 
@@ -97,24 +103,24 @@ export default class UIController {
         return null;
     }
 
-    logInCreateUser() {
-        return new User()
-    }
-
-    editPost(post) {
+    printPost(post) {
         this.titleInput.value = post.title;
         this.bodyInput.value = post.body;
         this.cancelBtn.style.display = 'inline-block';
         this.updateBtn.style.display = 'inline-block';
         this.updateBtn.dataset.id = post.id;
         this.submitBtn.style.display = 'none';
+        this.postForm.style.display = 'block';
+        this.postHereBtn.style.display = 'none';
     }
 
-    addNewPost() {
+    addNewPostView() {
         this.clearPostInput();
         this.cancelBtn.style.display = 'none';
         this.updateBtn.style.display = 'none';
         this.submitBtn.style.display = 'inline-block';
+        this.postForm.style.display = 'none';
+        this.postHereBtn.style.display = 'block';
     }
 
     clearPostInput() {
@@ -203,7 +209,26 @@ export default class UIController {
         setTimeout(() => this.successAlert.style.display = 'none', 3000);
     }
 
+    welcomeUser(user) {
+        if (!user) {
+            return;
+        }
+        this.welcome.textContent = `Welcome ${user.username}!`
+        this.welcome.style.display = 'block';
+        this.logOutBtn.style.display = 'block';
+        this.navbarLogIn.style.display = 'none';
+        this.navbarSignUp.style.display = 'none';
+    }
+    
+    logOut() {
+        this.welcome.style.display = 'none';
+        this.logOutBtn.style.display = 'none';
+        this.navbarLogIn.style.display = 'block';
+        this.navbarSignUp.style.display = 'block';
+    }
+
     showPostModal(post) {
+        this.postModal.modal('show');
         this.postModalTitle.textContent = post.title;
         this.postModalBody.textContent = post.body;
         this.postModalBody.style.whiteSpace = 'pre-wrap'
