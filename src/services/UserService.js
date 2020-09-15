@@ -7,7 +7,7 @@ export const LOGIN_SUCCESS = 0;
 
 export default class UserService {
   constructor() {
-    this.userClient = new EasyHTTP("http://localhost:3000/users");
+    this.userClient = new EasyHTTP("https://tiffanygan.ml:4000/users");
   }
 
   async checkEmail(user) {

@@ -1,12 +1,10 @@
 import UIController from "./ui/UIController";
-import EasyHTTP from "./lib/EasyHTTP";
 import UserService, { NO_ACCOUNT, PASSWORD_WRONG } from './services/UserService';
 import PostService from './services/PostService';
 
 let currUser = JSON.parse(localStorage.getItem('currUser'));
 
 const ui = new UIController(document);
-const postClient = new EasyHTTP("http://localhost:3000/posts");
 const userService = new UserService();
 const postService = new PostService();
 initPage();
@@ -20,21 +18,21 @@ ui.submitBtn.addEventListener('click', async () => {
     if (!post) {
         return;
     }
-    await postClient.post(post);
+    await postService.addPost(post);
     ui.clearPostInput();
     initPage();
 });
 
 ui.postArea.addEventListener('click', async e => {
     if (e.target.classList.contains('fa-trash')) {
-        await postClient.delete(e.target.parentElement.parentElement.id);
+        await postService.deletePost(e.target.parentElement.parentElement.id);
         initPage();
     }
 });
 
 ui.postArea.addEventListener('click', async e => {
     if (e.target.classList.contains('fa-pen')) {
-        const post = await postClient.getById(e.target.parentElement.parentElement.id);
+        const post = await postService.getPostById(e.target.parentElement.parentElement.id);
         ui.printPost(post);
     }
 });
@@ -45,7 +43,7 @@ ui.cancelBtn.addEventListener('click', () => {
 
 ui.updateBtn.addEventListener('click', async e => {
     const post = ui.createPost(currUser.username);
-    await postClient.update(parseInt(e.target.dataset.id), post);
+    await postService.updatePost(parseInt(e.target.dataset.id), post);
     ui.addNewPostView();
     initPage();
 });
@@ -117,10 +115,11 @@ ui.postHereBtn.addEventListener('click', () => {
     }
     ui.postHereBtn.style.display = 'none';
     ui.postForm.style.display = 'block';
+    ui.cancelBtn.style.display = 'inline-block';
 })
 
 async function initPage() {
-    const posts = await postClient.get();
+    const posts = await postService.getPosts();
     ui.showPosts(posts, currUser);
 
     const htmlCollection = document.getElementsByClassName('post');
@@ -133,4 +132,14 @@ async function initPage() {
     }));
     
     ui.welcomeUser(currUser);
+
+    if (posts.length === 2) {
+        ui.nextPage();
+        document.getElementById('next-page').addEventListener('click', async () => {
+            const nextPagePosts = await postService.getNextPage();
+            ui.showPosts(nextPagePosts, currUser);
+            ui.nextPage();
+            console.log('success!');
+        });
+    }
 }

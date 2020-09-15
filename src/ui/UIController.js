@@ -234,4 +234,16 @@ export default class UIController {
         this.postModalBody.style.whiteSpace = 'pre-wrap'
         this.postModalAuthor.textContent = `Posted by: ${post.author}`;
     }
+
+    nextPage() {
+        const a = document.createElement('a');
+        a.setAttribute('href', '#');
+        a.textContent = 'Next Page';
+        a.classList = 'd-flex align-items-center';
+        a.id = 'next-page';
+        const icon = document.createElement('i');
+        icon.classList = 'fas fa-caret-right ml-1';
+        a.appendChild(icon);
+        this.postArea.appendChild(a);
+    }
 }
