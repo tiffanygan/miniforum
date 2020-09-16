@@ -18,7 +18,7 @@
         crossorigin="anonymous"></script>
     <script defer src="./build/app.bundle.js"></script>
     <style>
-        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success, #post-form, #log-out-btn, #welcome { display: none; }
+        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success, #post-form, #log-out-btn, #welcome, #prev-page, #next-page { display: none; }
 
         .fas:hover { cursor: pointer; }
 
@@ -107,6 +107,10 @@
         </div>
         <h3 class="mt-3">Posts</h3>
         <div id="post-area" class="mb-5"></div>
+        <div class="row">
+            <a href="#" id="prev-page" class="mr-3"><i class="fas fa-caret-left mr-1"></i>Previous Page</a>
+            <a href="#" id="next-page">Next Page<i class="fas fa-caret-right ml-1"></i></a>
+        </div>
     </div>
 
     <!-- Modals -->

@@ -10,6 +10,8 @@ export default class UIController {
         this.logOutBtn = this.document.getElementById('log-out-btn');
         this.navbarLogIn = this.document.getElementById('navbar-log-in');
         this.navbarSignUp = this.document.getElementById('navbar-sign-up');
+        this.prevPage = this.document.getElementById('prev-page');
+        this.nextPage = this.document.getElementById('next-page');
 
         this.submitBtn = this.document.getElementById('submit');
         this.cancelBtn = this.document.getElementById('cancel');
@@ -235,15 +237,11 @@ export default class UIController {
         this.postModalAuthor.textContent = `Posted by: ${post.author}`;
     }
 
-    nextPage() {
-        const a = document.createElement('a');
-        a.setAttribute('href', '#');
-        a.textContent = 'Next Page';
-        a.classList = 'd-flex align-items-center';
-        a.id = 'next-page';
-        const icon = document.createElement('i');
-        icon.classList = 'fas fa-caret-right ml-1';
-        a.appendChild(icon);
-        this.postArea.appendChild(a);
+    showNextPageBtn() {
+        this.nextPage.style.display = 'block';
+    }
+
+    showPrevPageBtn() {
+        this.prevPage.style.display = 'block';
     }
 }

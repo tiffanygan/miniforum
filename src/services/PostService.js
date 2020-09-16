@@ -1,9 +1,11 @@
 import EasyHTTP from '../lib/EasyHTTP';
 
+
 export default class PostService {
     constructor() {
         this.pageNum = 1;
-        this.postClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`);
+        this.paginatedClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`);
+        this.postClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts`);
     }
 
     async getPostById(id) {
@@ -32,8 +34,14 @@ export default class PostService {
     }
 
     async getNextPage() {
+        this.paginatedClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`);
         this.pageNum += 1;
-        this.postClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=10`)
-        return this.postClient.get();
+        return this.paginatedClient.get();
+    }
+    
+    async getPrevPage() {
+        this.pageNum -= 1;
+        this.paginatedClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`);
+        return this.paginatedClient.get();
     }
 }
