@@ -237,11 +237,13 @@ export default class UIController {
         this.postModalAuthor.textContent = `Posted by: ${post.author}`;
     }
 
-    showNextPageBtn() {
+    showNextPageBtn(pageNum) {
         this.nextPage.style.display = 'block';
+        this.nextPage.dataset['currPageNum'] = pageNum;
     }
 
-    showPrevPageBtn() {
+    showPrevPageBtn(pageNum) {
         this.prevPage.style.display = 'block';
+        this.prevPage.dataset['currPageNum'] = pageNum;
     }
 }

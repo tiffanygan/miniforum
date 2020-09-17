@@ -1,6 +1,5 @@
 import EasyHTTP from '../lib/EasyHTTP';
 
-
 export default class PostService {
     constructor() {
         this.pageNum = 1;
