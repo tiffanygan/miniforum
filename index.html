@@ -18,17 +18,43 @@
         crossorigin="anonymous"></script>
     <script defer src="./build/app.bundle.js"></script>
     <style>
-        #cancel, #update, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-failure, #success, #post-form, #log-out-btn, #welcome, #prev-page, #next-page { display: none; }
+        #cancel,
+        #update,
+        #sign-in-not-filled-alert,
+        #log-in-not-filled-alert,
+        #log-in-failure,
+        #success,
+        #post-form,
+        #log-out-btn,
+        #welcome,
+        #prev-page,
+        #next-page {
+            display: none;
+        }
 
-        .fas:hover { cursor: pointer; }
+        .fas:hover {
+            cursor: pointer;
+        }
 
-        #log-in { margin-right: 1rem; }
+        #log-in {
+            margin-right: 1rem;
+        }
 
-        #log-in:hover, #sign-up:hover { color: white !important; }
+        #log-in:hover,
+        #sign-up:hover {
+            color: white !important;
+        }
 
-        .navbar-nav * { margin-right: 0.5rem; }
+        .navbar-nav * {
+            margin-right: 0.5rem;
+        }
 
-        #password-alert, #email-alert, #username-alert, #sign-in-not-filled-alert, #log-in-not-filled-alert, #log-in-no-user {
+        #password-alert,
+        #email-alert,
+        #username-alert,
+        #sign-in-not-filled-alert,
+        #log-in-not-filled-alert,
+        #log-in-no-user {
             padding: 0.5rem !important;
             display: none;
         }
@@ -68,10 +94,12 @@
                 <a href="#" id="welcome" class="text-light nav-link"></a>
             </li>
             <li class="nav-item">
-                <a href="#" class="text-light nav-link" data-toggle="modal" data-target="#log-in-modal" id="navbar-log-in">Log In</a>
+                <a href="#" class="text-light nav-link" data-toggle="modal" data-target="#log-in-modal"
+                    id="navbar-log-in">Log In</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="text-light nav-link" data-toggle="modal" data-target="#sign-up-modal" id="navbar-sign-up">Sign Up</a>
+                <a href="#" class="text-light nav-link" data-toggle="modal" data-target="#sign-up-modal"
+                    id="navbar-sign-up">Sign Up</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="text-light nav-link" id="log-out-btn">Log Out</a>
@@ -81,6 +109,10 @@
 
     <div class="container mt-3">
         <div class="alert alert-primary text-center mt-3" id="success">Nice to see you!</div>
+        <div>
+            <button type="button" class="btn btn-primary mx-auto mb-3 mt-3" id="post-here-btn">Something on your mind?
+                Post it here!</button>
+        </div>
         <div class="card" id="post-form">
             <div class="card-body">
                 <h2 class="card-title">What's on your mind?</h2>
@@ -102,16 +134,16 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            <button type="button" class="btn btn-primary mx-auto mb-3 mt-3" id="post-here-btn">Something on your mind? Post it here!</button>
-        </div>
         <h3 class="mt-3">Posts</h3>
-        <div id="post-area" class="mb-5"></div>
-        <div class="row">
+        <div style="height: 70vh;">
+            <div id="post-area" class="mb-5"></div>
+        </div>
+        <div class="d-flex flex-row mb-3">
             <a href="#" id="prev-page" class="mr-3"><i class="fas fa-caret-left mr-1"></i>Previous Page</a>
             <a href="#" id="next-page">Next Page<i class="fas fa-caret-right ml-1"></i></a>
         </div>
     </div>
+
 
     <!-- Modals -->
     <div class="modal fade" id="log-in-modal" tabindex="-1">
@@ -122,10 +154,12 @@
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger mt-3 text-center" id="log-in-not-filled-alert">Please fill in all inputs</div>
+                    <div class="alert alert-danger mt-3 text-center" id="log-in-not-filled-alert">Please fill in all
+                        inputs</div>
                     <div class="alert alert-danger mt-3 text-center" id="log-in-failure">
                         <p id="log-in-failure-message"></p>
-                        <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Sign up here instead</a>
+                        <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Sign up here
+                            instead</a>
                     </div>
                     <form>
                         <div class="form-group">
@@ -141,7 +175,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="log-in-btn">Log in</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <p>Don't have an account? <a href="#" data-toggle="modal" data-target="#sign-up-modal" data-dismiss="modal">Sign up here</a></p>
+                    <p>Don't have an account? <a href="#" data-toggle="modal" data-target="#sign-up-modal"
+                            data-dismiss="modal">Sign up here</a></p>
                 </div>
             </div>
         </div>
@@ -156,16 +191,19 @@
                 </div>
                 <form>
                     <div class="modal-body">
-                        <div class="alert alert-danger mt-3 text-center" id="sign-in-not-filled-alert">Please fill in all inputs</div>
+                        <div class="alert alert-danger mt-3 text-center" id="sign-in-not-filled-alert">Please fill in
+                            all inputs</div>
                         <div class="form-group">
                             <label for="sign-up-email">Email</label>
                             <input type="email" id="sign-up-email" class="form-control">
-                            <div class="alert alert-danger mt-3 text-center" id="email-alert">Email already registered</div>
+                            <div class="alert alert-danger mt-3 text-center" id="email-alert">Email already registered
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="sign-up-username">Username</label>
                             <input type="text" id="sign-up-username" class="form-control">
-                            <div class="alert alert-danger mt-3 text-center" id="username-alert">Username already registered</div>
+                            <div class="alert alert-danger mt-3 text-center" id="username-alert">Username already
+                                registered</div>
                         </div>
                         <div class="form-group">
                             <label for="sign-up-password">Password</label>
@@ -174,7 +212,8 @@
                         <div class="form-group">
                             <label for="confirm-password">Confirm Password</label>
                             <input type="password" id="confirm-password" class="form-control">
-                            <div class="alert alert-danger mt-3 text-center" id="password-alert">Passwords are not the same</div>
+                            <div class="alert alert-danger mt-3 text-center" id="password-alert">Passwords are not the
+                                same</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -182,7 +221,8 @@
                             responsibility of yourself</p>
                         <button type="button" class="btn btn-primary" id="sign-up-btn">Sign Up</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <p>Already have an account? <a href="#" data-toggle="modal" data-target="#log-in-modal" data-dismiss="modal">Log in here</a></p>
+                        <p>Already have an account? <a href="#" data-toggle="modal" data-target="#log-in-modal"
+                                data-dismiss="modal">Log in here</a></p>
                     </div>
                 </form>
             </div>
