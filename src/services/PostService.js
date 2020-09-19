@@ -2,45 +2,40 @@ import EasyHTTP from '../lib/EasyHTTP';
 
 export default class PostService {
     constructor() {
-        this.pageNum = 1;
-        this.searchParams = `?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`;
+        this.pageLimit = 4;
+        this.sort = 'id';
+        this.order = 'desc';
+        this.paginationParams = {_sort: this.sort, _order: this.order, _limit: this.pageLimit};
         this.postClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts`);
     }
     
-    async getPostById(id) {
-        const posts = await this.postClient.get();
-        return posts.find(currPost => currPost.id === parseInt(id));
-    }
-    
     async addPost(post) {
-        return this.postClient.post(post);
+        return await this.postClient.post(post);
     }
     
     async deletePost(id) {
-        return this.postClient.delete(id);
+        return await this.postClient.delete(id);
     }
     
     async getPostById(id) {
-        return this.postClient.getById(id);
+        return await this.postClient.getById(id);
     }
     
     async updatePost(id, post) {
-        return this.postClient.update(id, post);
+        return await this.postClient.update(id, post);
     }
     
     async getPosts() {
-        return this.postClient.get();
+        return await this.postClient.get();
+    }
+
+    async getTotPageCount() {
+        const posts = await this.getPosts();
+        return Math.ceil(posts.length / this.pageLimit);
     }
     
-    async getNextPage() {
-        this.searchParams = `?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`;
-        this.pageNum += 1;
-        return await this.postClient.getWithSearchParams(this.searchParams);
-    }
-    
-    async getPrevPage() {
-        this.pageNum -= 1;
-        this.paginatedClient = new EasyHTTP(`https://tiffanygan.ml:4000/posts?_sort=id&_order=desc&_page=${this.pageNum}&_limit=2`);
-        return this.paginatedClient.get();
+    async getPostsPage(pageNum) {
+        this.paginationParams['_page'] = pageNum;
+        return await this.postClient.getWithSearchParams(this.paginationParams);
     }
 }

@@ -127,42 +127,27 @@ ui.postHereBtn.addEventListener("click", () => {
 });
 
 ui.nextPage.addEventListener("click", async () => {
-  const posts = await postService.getNextPage();
-  const allPosts = await postService.getPosts();
-  ui.showPosts(posts, currUser);
+  const posts = await postService.getPostsPage(parseInt(ui.nextPage.dataset.currPageNum) + 1);
   const currPageNum = parseInt(ui.nextPage.dataset.currPageNum) + 1;
-  ui.showPrevPageBtn(currPageNum);
-  ui.showNextPageBtn(currPageNum);
-  console.log(typeof allPosts.length);
-  console.log(allPosts.length / 2);
-  if (allPosts.length / 2 === currPageNum) {
-    ui.nextPage.style.display = "none";
-  }
+  const totPageCount = await postService.getTotPageCount();
+  ui.showPosts(posts, currUser, currPageNum, totPageCount);
   addEventListnerToPosts();
 });
 
-// ui.prevPage.addEventListener("click", async () => {
-//   const posts = await postService.getPrevPage();
-//   const currPageNum = parseInt(ui.prevPage.dataset.currPageNum) - 1;
-//   ui.showPosts(posts, currUser);
-//   ui.showNextPageBtn(currPageNum);
-//   ui.showPrevPageBtn(currPageNum);
-//   if (currPageNum === 1) {
-//     ui.prevPage.style.display = "none";
-//   }
-//   addEventListnerToPosts();
-// });
+ui.prevPage.addEventListener("click", async () => {
+  const posts = await postService.getPostsPage(parseInt(ui.prevPage.dataset.currPageNum) - 1);
+  const currPageNum = parseInt(ui.prevPage.dataset.currPageNum) - 1;
+  const totPageCount = await postService.getTotPageCount();
+  ui.showPosts(posts, currUser, currPageNum, totPageCount);
+  addEventListnerToPosts();
+});
 
 async function initPage() {
-  const posts = await postService.getNextPage();
-  ui.showPosts(posts, currUser);
-
+  const currPageNum = 1;
+  const posts = await postService.getPostsPage(currPageNum);
+  const totPageCount = await postService.getTotPageCount();
+  ui.showPosts(posts, currUser, currPageNum, totPageCount);
   ui.welcomeUser(currUser);
-
-  if (posts.length === 2) {
-    ui.showNextPageBtn(1);
-  }
-
   addEventListnerToPosts();
 }
 

@@ -46,7 +46,7 @@ export default class UIController {
         this.postModal = $('#post-modal');
     }
 
-    showPosts(posts, currUser) {
+    showPosts(posts, currUser, currPageNum, totPagesCount) {
         this.clearPosts();
         posts.forEach(post => {
             const card = document.createElement('div');
@@ -63,8 +63,9 @@ export default class UIController {
             const postBody = document.createElement('p');
             postBody.style.whiteSpace = 'pre-wrap';
             postBody.classList = 'card-text';
-            if (post.body.split(/\r\n|\r|\n/).length > 1) {
-                postBody.textContent = post.body.split(/\r\n|\r|\n/)[0] + '...';
+            const lines = post.body.split(/\r\n|\r|\n/);
+            if (lines.length > 1 || lines[0].length > 70) {
+                postBody.textContent = lines[0].substring(0, 70) + '...';
             } else {
                 postBody.textContent = post.body;
             }
@@ -84,7 +85,16 @@ export default class UIController {
             this.postArea.appendChild(card);
             this.postForm.style.display = 'none';
             this.postHereBtn.style.display = 'block';
-        })
+        });
+        this.nextPage.style.display = 'block';
+        this.nextPage.dataset.currPageNum = currPageNum;
+        this.prevPage.style.display = 'block';
+        this.prevPage.dataset.currPageNum = currPageNum;
+        if (parseInt(this.nextPage.dataset.currPageNum) === totPagesCount) {
+            this.nextPage.style.display = 'none';
+        } else if (!this.prevPage.dataset.currPageNum || parseInt(this.prevPage.dataset.currPageNum) === 1) {
+            this.prevPage.style.display = 'none';
+        }
     }
 
     clearPosts() {
@@ -235,15 +245,5 @@ export default class UIController {
         this.postModalBody.textContent = post.body;
         this.postModalBody.style.whiteSpace = 'pre-wrap'
         this.postModalAuthor.textContent = `Posted by: ${post.author}`;
-    }
-
-    showNextPageBtn(pageNum) {
-        this.nextPage.style.display = 'block';
-        this.nextPage.dataset['currPageNum'] = pageNum;
-    }
-
-    showPrevPageBtn(pageNum) {
-        this.prevPage.style.display = 'block';
-        this.prevPage.dataset['currPageNum'] = pageNum;
     }
 }
