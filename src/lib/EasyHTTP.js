@@ -37,7 +37,7 @@ export default class EasyHTTP {
     }
 
     async getWithSearchParams(params) {
-        const res = await fetch(`${url}?` + new URLSearchParams(params));
+        const res = await fetch(`${this.url}?` + new URLSearchParams(params));
         return await res.json();
     }
 }
