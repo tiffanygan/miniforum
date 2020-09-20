@@ -127,7 +127,9 @@ ui.postHereBtn.addEventListener("click", () => {
 });
 
 ui.nextPage.addEventListener("click", async () => {
-  const posts = await postService.getPostsPage(parseInt(ui.nextPage.dataset.currPageNum) + 1);
+  const posts = await postService.getPostsPage(
+    parseInt(ui.nextPage.dataset.currPageNum) + 1
+  );
   const currPageNum = parseInt(ui.nextPage.dataset.currPageNum) + 1;
   const totPageCount = await postService.getTotPageCount();
   ui.showPosts(posts, currUser, currPageNum, totPageCount);
@@ -135,7 +137,9 @@ ui.nextPage.addEventListener("click", async () => {
 });
 
 ui.prevPage.addEventListener("click", async () => {
-  const posts = await postService.getPostsPage(parseInt(ui.prevPage.dataset.currPageNum) - 1);
+  const posts = await postService.getPostsPage(
+    parseInt(ui.prevPage.dataset.currPageNum) - 1
+  );
   const currPageNum = parseInt(ui.prevPage.dataset.currPageNum) - 1;
   const totPageCount = await postService.getTotPageCount();
   ui.showPosts(posts, currUser, currPageNum, totPageCount);
@@ -143,6 +147,19 @@ ui.prevPage.addEventListener("click", async () => {
 });
 
 async function initPage() {
+  if (window.matchMedia("(min-width: 800px)").matches) {
+    postService.pageLimit = 4;
+    postService.paginationParams["_limit"] = 4;
+  }
+  if (window.matchMedia("(min-width: 1366px)").matches) {
+    postService.pageLimit = 6;
+    postService.paginationParams["_limit"] = 6;
+  }
+  if (window.matchMedia("(max-width: 700px)").matches) {
+    postService.pageLimit = 2;
+    postService.paginationParams["_limit"] = 2;
+    ui.postArea.style.marginTop = '2rem';
+  }
   const currPageNum = 1;
   const posts = await postService.getPostsPage(currPageNum);
   const totPageCount = await postService.getTotPageCount();

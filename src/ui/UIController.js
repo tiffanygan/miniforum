@@ -90,9 +90,11 @@ export default class UIController {
         this.nextPage.dataset.currPageNum = currPageNum;
         this.prevPage.style.display = 'block';
         this.prevPage.dataset.currPageNum = currPageNum;
+        
         if (parseInt(this.nextPage.dataset.currPageNum) === totPagesCount) {
             this.nextPage.style.display = 'none';
-        } else if (!this.prevPage.dataset.currPageNum || parseInt(this.prevPage.dataset.currPageNum) === 1) {
+        } 
+        if (parseInt(this.prevPage.dataset.currPageNum) === 1) {
             this.prevPage.style.display = 'none';
         }
     }
