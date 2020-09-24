@@ -38,4 +38,9 @@ export default class PostService {
         this.paginationParams['_page'] = pageNum;
         return await this.postClient.getWithSearchParams(this.paginationParams);
     }
+
+    setPageLimit(limit) {
+        this.pageLimit = limit;
+        this.paginationParams['_limit'] = limit;
+    }
 }

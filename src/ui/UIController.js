@@ -20,6 +20,7 @@ export default class UIController {
         this.titleInput = this.document.getElementById('title');
         this.bodyInput = this.document.getElementById('content');
         this.postForm = this.document.getElementById('post-form');
+        this.postWarning = this.document.getElementById('post-warning');
 
         this.signUpUsernameInput = this.document.getElementById('sign-up-username');
         this.signUpEmailInput = this.document.getElementById('sign-up-email');
@@ -87,14 +88,14 @@ export default class UIController {
             this.postHereBtn.style.display = 'block';
         });
         this.nextPage.style.display = 'block';
-        this.nextPage.dataset.currPageNum = currPageNum;
+        this.nextPage.dataset.pageNum = currPageNum + 1;
         this.prevPage.style.display = 'block';
-        this.prevPage.dataset.currPageNum = currPageNum;
+        this.prevPage.dataset.pageNum = currPageNum - 1;
         
-        if (parseInt(this.nextPage.dataset.currPageNum) === totPagesCount) {
+        if (parseInt(this.nextPage.dataset.pageNum) === totPagesCount + 1) {
             this.nextPage.style.display = 'none';
         } 
-        if (parseInt(this.prevPage.dataset.currPageNum) === 1) {
+        if (parseInt(this.prevPage.dataset.pageNum) === 0) {
             this.prevPage.style.display = 'none';
         }
     }
@@ -104,7 +105,9 @@ export default class UIController {
     }
 
     createPost(author) {
-        if (this.titleInput.value === null || this.bodyInput.value === null) {
+        if (this.titleInput.value === '' || this.bodyInput.value === '') {
+            this.postWarning.style.display = 'block';
+            setTimeout(() => this.postWarning.style.display = 'none', 2000)
             return false;
         }
         return new Post(this.titleInput.value, this.bodyInput.value, author);

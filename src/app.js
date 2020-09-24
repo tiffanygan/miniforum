@@ -6,6 +6,7 @@ import UserService, {
 import PostService from "./services/PostService";
 
 let currUser = JSON.parse(localStorage.getItem("currUser"));
+let orderNum = 0;
 
 const ui = new UIController(document);
 const userService = new UserService();
@@ -30,15 +31,22 @@ ui.postArea.addEventListener("click", async (e) => {
   if (e.target.classList.contains("fa-trash")) {
     await postService.deletePost(e.target.parentElement.parentElement.id);
     initPage();
-  }
-});
-
-ui.postArea.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("fa-pen")) {
-    const post = await postService.getPostById(
-      e.target.parentElement.parentElement.id
-    );
+  } else if (e.target.classList.contains("fa-pen")) {
+    const post = await postService.getPostById(e.target.parentElement.parentElement.id);
     ui.printPost(post);
+  } else {
+    let node = e.target;
+    while (true) {
+      if (node.classList.contains('post')) {
+        const currPost = await postService.getPostById(node.id);
+        ui.showPostModal(currPost);
+        break;
+      } else if (node === ui.postArea) {
+        break;
+      } else {
+        node = node.parentElement;
+      }
+    }
   }
 });
 
@@ -126,57 +134,41 @@ ui.postHereBtn.addEventListener("click", () => {
   ui.cancelBtn.style.display = "inline-block";
 });
 
-ui.nextPage.addEventListener("click", async () => {
-  const posts = await postService.getPostsPage(
-    parseInt(ui.nextPage.dataset.currPageNum) + 1
-  );
-  const currPageNum = parseInt(ui.nextPage.dataset.currPageNum) + 1;
-  const totPageCount = await postService.getTotPageCount();
-  ui.showPosts(posts, currUser, currPageNum, totPageCount);
-  addEventListnerToPosts();
-});
+ui.nextPage.addEventListener("click", () => getPagePosts(ui.nextPage));
 
-ui.prevPage.addEventListener("click", async () => {
-  const posts = await postService.getPostsPage(
-    parseInt(ui.prevPage.dataset.currPageNum) - 1
-  );
-  const currPageNum = parseInt(ui.prevPage.dataset.currPageNum) - 1;
+ui.prevPage.addEventListener("click", () => getPagePosts(ui.prevPage));
+
+async function getPagePosts(pageBtn) {
+  const pageNum = parseInt(pageBtn.dataset.pageNum);
+  const posts = await postService.getPostsPage(pageNum);
   const totPageCount = await postService.getTotPageCount();
-  ui.showPosts(posts, currUser, currPageNum, totPageCount);
-  addEventListnerToPosts();
-});
+  ui.showPosts(posts, currUser, pageNum, totPageCount);
+}
 
 async function initPage() {
-  if (window.matchMedia("(min-width: 800px)").matches) {
-    postService.pageLimit = 4;
-    postService.paginationParams["_limit"] = 4;
-  }
-  if (window.matchMedia("(min-width: 1366px)").matches) {
-    postService.pageLimit = 6;
-    postService.paginationParams["_limit"] = 6;
-  }
-  if (window.matchMedia("(max-width: 700px)").matches) {
-    postService.pageLimit = 2;
-    postService.paginationParams["_limit"] = 2;
+  orderNum = orderNum + 1;
+  console.log(`order: ${orderNum}`);
+  if (window.matchMedia("(max-width: 425px)").matches) {
+    console.log(`small size, ${orderNum}`);
+    postService.setPageLimit(2);
     ui.postArea.style.marginTop = '2rem';
+  }
+  if (window.matchMedia("(min-width: 426px) and (max-width: 1024px)").matches) {
+    console.log(`medium size, ${orderNum}`);
+    postService.setPageLimit(4);
+  }
+  if (window.matchMedia("(min-width: 1025px)").matches) {
+    console.log(`large size, ${orderNum}`);
+    postService.setPageLimit(6);
   }
   const currPageNum = 1;
   const posts = await postService.getPostsPage(currPageNum);
   const totPageCount = await postService.getTotPageCount();
+  console.log(`post length: ${posts.length}`);
   ui.showPosts(posts, currUser, currPageNum, totPageCount);
   ui.welcomeUser(currUser);
-  addEventListnerToPosts();
 }
 
-async function addEventListnerToPosts() {
-  const htmlCollection = document.getElementsByClassName("post");
-  Array.from(htmlCollection).forEach((post) =>
-    post.addEventListener("click", async (e) => {
-      if (e.target.classList.contains("fas")) {
-        return;
-      }
-      const currPost = await postService.getPostById(post.id);
-      ui.showPostModal(currPost);
-    })
-  );
-}
+window.addEventListener('resize', async () => {
+  initPage();
+});
