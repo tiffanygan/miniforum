@@ -167,6 +167,9 @@ async function initPage() {
 }
 
 window.addEventListener('resize', async () => {
+  if (ui.postForm.style.display !== 'none') {
+    return;
+  }
   resizeTime = Date.now();
   setTimeout(initPage, 70);
 });
