@@ -6,7 +6,7 @@ import UserService, {
 import PostService from "./services/PostService";
 
 let currUser = JSON.parse(localStorage.getItem("currUser"));
-let orderNum = 0;
+let resizeTime = 0;
 
 const ui = new UIController(document);
 const userService = new UserService();
@@ -146,29 +146,27 @@ async function getPagePosts(pageBtn) {
 }
 
 async function initPage() {
-  orderNum = orderNum + 1;
-  console.log(`order: ${orderNum}`);
-  if (window.matchMedia("(max-width: 425px)").matches) {
-    console.log(`small size, ${orderNum}`);
+  if (Date.now() - resizeTime < 50) {
+    return;
+  }
+  if (window.matchMedia("(max-width: 820px)").matches) {
     postService.setPageLimit(2);
     ui.postArea.style.marginTop = '2rem';
   }
-  if (window.matchMedia("(min-width: 426px) and (max-width: 1024px)").matches) {
-    console.log(`medium size, ${orderNum}`);
+  if (window.matchMedia("(min-width: 821px) and (max-width: 1024px)").matches) {
     postService.setPageLimit(4);
   }
   if (window.matchMedia("(min-width: 1025px)").matches) {
-    console.log(`large size, ${orderNum}`);
     postService.setPageLimit(6);
   }
   const currPageNum = 1;
   const posts = await postService.getPostsPage(currPageNum);
   const totPageCount = await postService.getTotPageCount();
-  console.log(`post length: ${posts.length}`);
   ui.showPosts(posts, currUser, currPageNum, totPageCount);
   ui.welcomeUser(currUser);
 }
 
 window.addEventListener('resize', async () => {
-  initPage();
+  resizeTime = Date.now();
+  setTimeout(initPage, 70);
 });
